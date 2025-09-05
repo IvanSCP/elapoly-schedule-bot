@@ -12,7 +12,7 @@
 
   "scheduler": {
     "is_activated": true,
-    "settings": "00 22 * * 0,1,2,3,4,6"
+    "settings": "00 22 * * 0-5"
   },
 
   "messages": {
@@ -41,7 +41,8 @@
     "time_column": "B",
     "group_column": "E",
     "group_name": "215-1",
-    "rows_to_fetch": 16
+    "rows_to_fetch": 16,
+    "rtf_saturday": 10
   },
 
   "url_parser": {
@@ -54,30 +55,42 @@
     "group_sended": "Расписание успешно отправлено в группу",
     "group_no_schedule": "Расписание не найдено для отправки в группу",
     "send_error": "Ошибка при отправке расписания: {e}",
+
     "start_received": "Пользователь {username} (ID: {user_id}) запустил команду /start",
+    
     "user_try_fc": "Пользователь {username} (ID: {user_id}) пытается загрузить файл расписания",
     "fc_successful": "Пользователь {username} (ID: {user_id}) загрузил файл",
     "fc_send_not_file": "Пользователь {username} (ID: {user_id}) отправил сообщение, отличное от файла, пытаясь загрузить файл расписания",
     "user_send_file_only": "Пользователь {username} (ID: {user_id}) отправил файл, но без команды /fc",
+
     "user_try_up": "Пользователь {username} (ID: {user_id}) пытается парсить файл расписания",
     "up_successful": "Пользователь {username} (ID: {user_id}) успешно обновил расписание",
     "up_unsuccessful": "Ошибка обновления расписания пользователем {username} (ID: {user_id})",
     "up_error": "Ошибка при обновлении расписания: {e}",
+
     "user_try_getfile": "Пользователь {username} (ID: {user_id}) запросил файл расписания",
     "getfile_sended": "Файл расписания успешно отправлен",
     "getfile_not_found": "Не удалось отправить файл расписания, поскольку файл не был найден",
+
     "user_try_today": "Пользователь {username} (ID: {user_id}) запросил расписание на сегодня",
     "today_sended": "Расписание на сегодня ({today_str}) успешно отправлено",
     "today_not_found": "Расписание на сегодня ({today_str}) не было найдено",
+
     "user_try_tomorrow": "Пользователь {username} (ID: {user_id}) запросил расписание на завтра",
     "tomorrow_sended": "Расписание на завтра ({tomorrow_str}) успешно отправлено",
     "tomorrow_not_found": "Расписание на завтра ({tomorrow_str}) не было найдено",
+
     "user_ping": "Пользователь {username} (ID: {user_id}) проверяет работоспособность бота",
+
     "scheduler_started": "Планировщик задач запущен",
+    "scheduler_update": "Планировщик задач запустил отправку расписания в группу",
+    "scheduler_error": "Ошибка планировщика задач: {e}",
+
     "permission_check_error": "Ошибка проверки пользователя в группе: {e}",
     "permissions_file_not_found": "Файл доступов не найден",
     "admins_file_not_found": "Файл администраторов не найден",
     "blacklist_file_not_found": "Файл чёрного списка не найден",
+
     "parser_link_founded": "Найдена ссылка на расписание: {full_url}",
     "parser_link_not_founded": "Ссылка на расписание не найдена на странице",
     "parser_error": "Ошибка при получении ссылки на расписание: {e}",
@@ -85,6 +98,7 @@
     "file_downloaded": "Файл расписания успешно загружен и сохранен как {file_path}",
     "file_download_failed": "Не удалось скачать файл. Статус: {rs}",
     "file_download_error": "Ошибка при скачивании файла расписания: {e}",
+
     "schedule_file_not_found": "Файл расписания не найден",
     "schedule_parser_error": "Ошибка при чтении расписания: {e}"
   },
