@@ -30,7 +30,7 @@ bot = Bot(token=config['bot_token']) # Замените YOUR_TOKEN_HERE в ко�
 dp = Dispatcher()
 
 # Глобальные переменные из конфига
-GROUP_ID = config['group_id'] # Укажите в конфиге ID (добавив вначале -100) группы/канала, где бот является администратором
+GROUP_ID = config['group_id'] # Укажите в конфиге ID группы/канала, где бот является администратором. Если это канал или супер-группа, то в начале ID добавьте -100
 PERMISSIONS_FILE = config['files']['permissions_file']
 SCHEDULE_FILE = config['files']['schedule_file']
 BLACKLIST_FILE = config['files']['blacklist_file']
@@ -63,13 +63,6 @@ async def send_schedule():
             logger.warning(config['logger_messages']['group_no_schedule'])
     except Exception as e:
         logger.error(config['logger_messages']['send_error'].format(e=e))
-
-# Настройка планировщика задач
-if config['scheduler']['is_activated'] == True: # Если в конфиге False, то планировщик не будет работать
-    @crontab(config['scheduler']['settings'])  # 00 22 * * 0,1,2,3,4,6 = 22:00 по понедельникам-пятницам и воскресеньям
-    async def scheduled_task():
-        await send_schedule()
-    logger.info(config['logger_messages']['scheduler_started'])
 
 # Обработчик команды /start
 @dp.message(Command("start"))
@@ -240,6 +233,18 @@ async def handle_message(message: types.Message):
         await tomorrow_command(message)
 
 async def main():
+    # Настройка планировщика задач
+    if config['scheduler']['is_activated'] == True: # Если в конфиге False, то планировщик не будет работать
+        @crontab(config['scheduler']['settings'])  # 00 22 * * 0-5 = 22:00 по понедельникам-пятницам и воскресеньям (sunday-friday)
+        async def scheduled_task():
+            try:
+                logger.info(config['logger_messages']['scheduler_update'])
+                await send_schedule()
+            except Exception as e:
+                logger.error(config['logger_messages']['scheduler_error'].format(e=e))
+        logger.info(config['logger_messages']['scheduler_started'])
+    
+    # Пуллинг бота
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
