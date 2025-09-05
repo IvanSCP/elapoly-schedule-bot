@@ -1,0 +1,6 @@
+asyncio
+aiogram
+aiocron
+aiohttp
+beautifulsoup4
+openpyxl
