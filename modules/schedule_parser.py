@@ -46,13 +46,21 @@ async def parse_schedule_for_date(schedule_file: str, config: dict, target_date:
         date_row = None
         for row in range(1, ws.max_row + 1):
             cell_value = ws[f'{date_col}{row}'].value
-            if cell_value and isinstance(cell_value, str) and date_str in cell_value.upper():
+            if cell_value and isinstance(cell_value, str) and date_str in cell_value.upper() and "ГАПОУ" not in cell_value.upper():
                 date_row = row
+                
+                # Проверяем, является ли день субботой
+                date_cell_value = ws[f'{date_col}{date_row}'].value
+                if date_cell_value and isinstance(date_cell_value, str) and "СУББОТА" in date_cell_value.upper():
+                    rows_to_fetch = config['schedule_parser']['rtf_saturday']  # Значение для субботы
+                else:
+                    rows_to_fetch = config['schedule_parser']['rows_to_fetch']  # Стандартное значение
+                
                 break
 
         if not date_row:
             return None
-
+          
         # Находим строку с группами (обычно через 4 строки после даты)
         groups_row = date_row + 4
 
@@ -71,7 +79,7 @@ async def parse_schedule_for_date(schedule_file: str, config: dict, target_date:
         schedule_lines = []
         current_time = None
 
-        # Проходим по 16 строкам с расписанием "под группой" (если в файле их больше, то измените конфиг!)
+        # Проходим по 16 строкам с расписанием "под группой" по будням, 10 в субботу
         for i in range(1, rows_to_fetch + 1):
             row_index = groups_row + i
             
