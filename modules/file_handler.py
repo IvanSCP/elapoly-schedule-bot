@@ -26,7 +26,7 @@ async def get_schedule_link(session: aiohttp.ClientSession, config: dict) -> Opt
         logger.error(config['logger_messages']['parser_error'].format(e=e))
         return None
 
-async def download_schedule(config: dict) -> Optional[str]:
+async def download_schedule(file_path, config: dict) -> Optional[str]:
     try:
         async with aiohttp.ClientSession() as session:
             # Получаем URL для скачивания
@@ -41,7 +41,6 @@ async def download_schedule(config: dict) -> Optional[str]:
                     content = await response.read()
 
                     # Сохраняем в указанный файл (перезаписываем существующий)
-                    file_path = Path(config['schedule_file'])
                     with open(file_path, 'wb') as file:
                         file.write(content)
 
